@@ -1,73 +1,93 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-struct tache_date
-{
-    int jour;
-    int mois;
-    int anne;
+int taille = 2;
+
+struct date{
+	int day;
+	int month;
+	int year;
+};
+struct Taches{
+	char tache_name[50];
+	char description[100];
+	char priority[50];
+	struct date tacheDate;
 };
 
-struct Taches
-{
-    char Nom_de_tache[50];
-    struct tache_date date;
-    char description[255];
-    char priorite[50];
-};
+void add_tache(struct Taches tache[]){
+	
+	 for (int i = 0; i < taille; i++) {
+	 	
+		printf("++ Votre tache:\n ");
+        scanf(" %[^\n]s",tache[i].tache_name);
+		//gets(tache[i].tache_name);
 
-void Ajouter(struct Taches tach[], int *size)
-{
-    for (int i = 0; i < *size; i++)
-    {
-        printf("Entrer Le nom de tache : ");
-        fgets(tach[i].Nom_de_tache, sizeof(tach[i].Nom_de_tache), stdin);
+        printf("+ Description :\n");
+        scanf(" %[^\n]s",tache[i].description);
+        //gets(tache[i].description);
 
-        printf("Entrer Une description : ");
-        fgets(tach[i].description, sizeof(tach[i].description), stdin);
+        printf("+ Priorite:\n");
+        scanf(" %[^\n]s",tache[i].priority);
+        //gets(tache[i].priority);
 
-        printf("Entrer La priorite : ");
-        fgets(tach[i].priorite, sizeof(tach[i].priorite), stdin);
-
-        printf("Entrer La date de tache (jour mois annee) : ");
-        scanf("%d %d %d", &tach[i].date.jour, &tach[i].date.mois, &tach[i].date.anne);
-
-        // Clear input buffer
-        while (getchar() != '\n');
-    }
-}
-
-void Affichier(struct Taches tach[], int *size)
-{
-    printf("\nAdded Tasks:\n");
-    for (int i = 0; i < *size; i++)
-    {
-        printf("La tache : %d:\n", i + 1);
-        printf("Nom de tache: %s", tach[i].Nom_de_tache);
-        printf("Date de tache: %d/%d/%d\n", tach[i].date.jour, tach[i].date.mois, tach[i].date.anne);
-        printf("Description: %s", tach[i].description);
-        printf("Priorite: %s", tach[i].priorite);
+        printf("+ Date :\n");
+        scanf("%d/%d/%d", &tache[i].tacheDate.day, &tache[i].tacheDate.month, &tache[i].tacheDate.year);
         printf("\n");
-    }
+        
+        // declared to avoid issues with the next task bcs it could skip '\n',
+        while (getchar() != '\n');
+	}
 }
 
-int main()
-{
-    struct Taches Task[50];
+void Affichage(struct Taches tache[]){
+	for(int i=0; i<taille;i++){ 
+		printf("Task %d: %s\n", i + 1, tache[i].tache_name);
+		printf("\t-Description :%s\n",tache[i].description);
+		printf("\t-Priorite :%s\n",tache[i].priority);
+		printf("\t-Date :%d/%d/%d\n",tache[i].tacheDate.day,tache[i].tacheDate.month,tache[i].tacheDate.year);
+		printf("\n");
+	}
+		
+}
 
-    int size;
-    printf("Entrer le nombre des taches : ");
-    scanf("%d", &size);
+void Menu(struct Taches tache[]) {
+    int  choix;
+	do{
+		printf("\t:::: Menu ::::\t\n");
+		printf("< 1 > Ajouter une Tache \n");
+		printf("< 2 > Afficher la Liste des Taches \n");
+		printf("< 3 > Supprimer une Tache \n");
+		printf("< 4 > Modifier une Tache \n");
+		printf("< 5 > Ordonne les Tache \n");
+		printf("< 6 > filtrer les Tache \n");
+		printf("< 7 > Quitter \n");
+		printf("==============choix : ");
+		scanf("%d",&choix);
+		
+		
+		switch(choix){
+			case 1:
+				add_tache(tache);
+				break;
+				
+			case 2:
+				Affichage(tache);
+				break;
+			default:
+				printf("Choix invalide. Entrer un choix entre 1 et 7!\n");
+				
+		}
+	} while( choix != '7');
+			
+}
+		
 
-    // Check if the size is within bounds
-    if (size > 50 || size <= 0)
-    {
-        printf("Invalid size. Please enter a number between 1 and 50.\n");
-        return 1; // Return an error code
-    }
 
-    Ajouter(Task, &size);
-    Affichier(Task, &size);
 
-    return 0;
+int main(){
+	struct Taches tache[50];
+	char choix;
+	
+	Menu(tache);	
+		
 }
