@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <time.h>
 //Global Variables
 int NMBR_T = 0;
@@ -68,7 +69,7 @@ struct Taches{
 
 
 
-
+//founction de ajouter des taches 
 
 void Ajouter(struct Taches tache[]) {
     printf("Le nom de tache:\n ");
@@ -82,62 +83,74 @@ void Ajouter(struct Taches tache[]) {
 
     printf("+ La Date (format: day/month/year) :\n");
     scanf("%d/%d/%d", &tache[NMBR_T].tacheDate.day, &tache[NMBR_T].tacheDate.month, &tache[NMBR_T].tacheDate.year);
-	// 
+
+// la condition de verifier la date 
+
+
     // if (!isValidDate(tache[NMBR_T].tacheDate.day, tache[NMBR_T].tacheDate.month, tache[NMBR_T].tacheDate.year)) {
     //     printf("Format de date invalide. Veuillez entrer une date valide.\n");
     //     return;
     // }
+
+
+
     // Clear the input buffer
     while (getchar() != '\n');
+
+	// pour incrementer la valeur de Nombre des taches
     NMBR_T++;
 }
 	
 
 
-void Affichage(struct Taches tache[]){
-	for(int i=0; i<NMBR_T;i++){ 
-		printf("La tache %d:\t %s\n", i + 1, tache[i].tache_name);
-		printf("\t-Description :%s\n",tache[i].description);
-		switch (tache[i].priority) {
-            case HAUTE:
-                printf("\t-Priorite: HAUTE\n");
-                break;
-            case MOYENNE:
-                printf("\t-Priorite: MOYENNE\n");
-                break;
-            case BASSE:
-                printf("\t-Priorite: BASSE\n");
-                break;
-            default:
-                printf("\t-Priorite: Inconnue\n");
+void Affichage(struct Taches tache[]) {
+    if (NMBR_T < 1) {
+        printf("There are no tasks to display.\n");
+    } else {
+        printf("\n\t\t\t\t\t\t:::::::::::::::::::::::::");
+        printf("\n\t\t\t\t\t\t\tTO DO LIST");
+        printf("\n\t\t\t\t\t\t:::::::::::::::::::::::::\n");
+
+        printf("+----+-------------------------+-------------------------------+------------------+----------------------+\n");
+        printf("| ID |     Nom de la tache     |          Description          |     Priorite     |   Date d'echeance    |\n");
+        printf("+----+-------------------------+-------------------------------+------------------+----------------------+\n");
+
+        for (int i = 0; i < NMBR_T; i++) {
+            printf("| %-2d | %-23s | %-29s | %-16s | %02d/%02d/%04d           |\n",
+                   i + 1, tache[i].tache_name, tache[i].description,
+                   (tache[i].priority == HAUTE) ? "HAUTE" : (tache[i].priority == MOYENNE) ? "MOYENNE" : "BASSE",
+                   tache[i].tacheDate.day, tache[i].tacheDate.month, tache[i].tacheDate.year);
+        printf("+----+-------------------------+-------------------------------+------------------+----------------------+\n");
         }
-		printf("\t-Date :%d/%d/%d\n",tache[i].tacheDate.day,tache[i].tacheDate.month,tache[i].tacheDate.year);
-		printf("\n");
-	}
-		
+    }
 }
+
 
 //La function supprimer
 void Supprimer(struct Taches tache[]) {
-    int index;
+    int pos;
 
     printf("Entrez le numero de la tache a supprimer : ");
-    scanf("%d", &index);
+    scanf("%d", &pos);
 
-    // // Clear the input buffer
-    // while (getchar() != '\n');
+    // Validation 
 
-    // Validation
-    if (index >= 1 && index <= NMBR_T) {
-        for (int i = index - 1; i < NMBR_T - 1; i++) {
+    if (pos >= 1 && pos <= NMBR_T) {
+        for (int i = pos - 1; i < NMBR_T - 1; i++) {
             tache[i] = tache[i + 1];
         }
         NMBR_T--;
+		
+        printf("La tache %d a ete supprimee avec succes.\n", pos);
 
-        printf("La tache %d a ete supprimee avec succes.\n", index);
     } else {
         printf("Numero de tache invalide.\n");
+		
+		
     }
+
+
+	
 }
 
 void Menu(struct Taches tache[]) {
@@ -173,7 +186,9 @@ void Menu(struct Taches tache[]) {
 				 break;
 			default:
 				printf("Choix invalide. Entrer un choix entre 1 et 7!\n");
-				
+			case 7:
+                printf("Programme terminé.\n");
+                break;	
 		}
 	} while( choix != '7');
 	
