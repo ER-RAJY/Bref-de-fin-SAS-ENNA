@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <string.h>
+
 //Global Variables
 int NMBR_T = 0;
 enum priority{
@@ -69,8 +71,11 @@ struct Taches{
 
 
 
-//founction de ajouter des taches 
 
+
+
+
+//founction de ajouter des taches 
 void Ajouter(struct Taches tache[]) {
     printf("Le nom de tache:\n ");
     scanf(" %[^\n]s", tache[NMBR_T].tache_name);
@@ -102,7 +107,7 @@ void Ajouter(struct Taches tache[]) {
 }
 	
 
-
+//La fonction de Affichage 
 void Affichage(struct Taches tache[]) {
     if (NMBR_T < 1) {
         printf("There are no tasks to display.\n");
@@ -125,12 +130,72 @@ void Affichage(struct Taches tache[]) {
     }
 }
 
+#include <stdio.h>
+#include <string.h>
+
+void Modifier(struct Taches tache[], int N) {
+    int choix;
+    char Newname[50];
+    char NewDescription[100];
+    int priorite;
+    struct date newDate;
+
+    if (N >= 1 && N <= NMBR_T) {
+        printf("::::::::: Que voulez vous modifier :::::::\t\n");
+        printf(":: < 1 >  Le nom de tache              ::\n");
+        printf(":: < 2 >  La description                ::\n");
+        printf(":: < 3 >  La priorite.                  ::\n");
+        printf(":: < 4 >  La date                       ::\n");
+        printf("::::::::::::::::::::::::::::::::::::::::::\t\n");
+        printf("\n");
+
+        printf("Entrer Votre choix : ");
+        scanf("%d", &choix);
+
+        switch (choix) {
+            case 1:
+                printf("Entrer le nouveau nom de la tache : ");
+                scanf(" %[^\n]s", Newname);
+                strcpy(tache[N - 1].tache_name, Newname);
+                printf("Le nom de la tache %d a ete modifie avec succes.\n", N);
+                break;
+
+            case 2:
+                printf("Entrer la nouvelle description : ");
+                scanf(" %[^\n]s", NewDescription);
+                strcpy(tache[N - 1].description, NewDescription);
+                printf("La description de la tache %d a ete modifiee avec succes.\n", N);
+                break;
+
+            case 3:
+                printf("Entrer la nouvelle priorite (0: HAUTE, 1: MOYENNE, 2: BASSE) : ");
+                scanf("%d", &priorite);
+                tache[N - 1].priority = priorite;
+                printf("La priorite de la tache %d a ete modifiee avec succes.\n", N);
+                break;
+
+            case 4:
+                printf("Entrer la nouvelle date (format: day/month/year) : ");
+                scanf("%d/%d/%d", &newDate.day, &newDate.month, &newDate.year);
+                tache[N - 1].tacheDate = newDate;
+                printf("La date de la tache %d a ete modifiee avec succes.\n", N);
+                break;
+
+            default:
+                printf("Choix invalide.\n");
+                break;
+        }
+    } else {
+        printf("Numero de tache invalide.\n");
+    }
+}
+
 
 //La function supprimer
 void Supprimer(struct Taches tache[]) {
     int pos;
 
-    printf("Entrez le numero de la tache a supprimer : ");
+    printf("Entrez le ID de la tache a supprimer : ");
     scanf("%d", &pos);
 
     // Validation 
@@ -153,18 +218,22 @@ void Supprimer(struct Taches tache[]) {
 	
 }
 
+//La function de Menu
 void Menu(struct Taches tache[]) {
     int  choix;
 
 	// printf("Entrer le nombre de tache :\n");
+    // scanf("")
+
+    
 	printf("\n");
-	// scanf("")
+	
 	do{
 		printf(":::::::::::::::::< Menu >:::::::::::::::::\t\n");
 		printf(":: < 1 >  Ajouter une Tache.            ::\n");
 		printf(":: < 2 >  Afficher la Liste des Taches. ::\n");
-		printf(":: < 3 >  Supprimer une Tache.          ::\n");
-		printf(":: < 4 >  Modifier une Tache.           ::\n");
+		printf(":: < 3 >  Modifier une Tache.           ::\n");
+		printf(":: < 4 >  Supprimer une Tache.          ::\n");
 		printf(":: < 5 >  Ordonne les Tache.            ::\n");
 		printf(":: < 6 >  filtrer les Tache.            ::\n");
 		printf(":: < 7 >  Quitter.                      ::\n");
@@ -175,14 +244,28 @@ void Menu(struct Taches tache[]) {
 		
 		switch(choix){
 			case 1:
+            //Ajouter 
 				Ajouter(tache);
 				break;
 				
 			case 2:
+            //Affichage 
 				Affichage(tache);
 				break;
-			case 3:
-				 Supprimer(tache);
+		    case 3: {
+                // Modifier
+                int N;
+                Affichage(tache);
+                printf("Entrer le ID de la tache : ");
+                scanf("%d", &N);
+                Modifier(tache, N);
+                break;
+            }
+				 break;
+			case 4:
+            //Supprimer
+                Affichage(tache);
+				Supprimer(tache);
 				 break;
 			default:
 				printf("Choix invalide. Entrer un choix entre 1 et 7!\n");
@@ -195,7 +278,7 @@ void Menu(struct Taches tache[]) {
 			
 
 }
-		
+
 
 int main(){
 	struct Taches tache[50];
