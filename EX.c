@@ -62,10 +62,9 @@ void Affichage( Taches tache[]) {
         printf("+----+-------------------------+-------------------------------+------------------+----------------------+\n");
 
         for (int i = 0; i < NMBR_T; i++) {
-            printf("| %-2d | %-23s | %-29s | %-16s | %02d/%02d/%04d           |\n",
-                   i + 1, tache[i].tache_name, tache[i].description,
-                   (tache[i].priority == HAUTE) ? "HAUTE" : (tache[i].priority == MOYENNE) ? "MOYENNE" : "BASSE",
-                   tache[i].tacheDate.day, tache[i].tacheDate.month, tache[i].tacheDate.year);
+            printf("| %-2d | %-23s | %-29s | %-16s | %02d/%02d/%04d           |\n",i + 1, tache[i].tache_name, tache[i].description,
+            (tache[i].priority == HAUTE) ? "HAUTE" : (tache[i].priority == MOYENNE) ? "MOYENNE" : "BASSE",
+            tache[i].tacheDate.day, tache[i].tacheDate.month, tache[i].tacheDate.year);
         printf("+----+-------------------------+-------------------------------+------------------+----------------------+\n");
         }
     }
@@ -188,7 +187,60 @@ void trieeDecroissant( Taches tache[]) {
         }
     }Affichage(tache);
 }
-void 
+
+void FiltrerParPriorite( Taches tache[]) {
+    int N;
+    printf("Choisir une priorite (0: HAUTE, 1: MOYENNE, 2: BASSE) : ");
+    scanf("%d", &N);
+
+    int found = 0;
+
+    printf("\n\t\t\t\t\t\t:::::::::::::::::::::::::");
+    printf("\n\t\t\t\t\t\t\tTO DO LIST");
+    printf("\n\t\t\t\t\t\t:::::::::::::::::::::::::\n");
+
+    printf("+----+-------------------------+-------------------------------+------------------+------------------+\n");
+    printf("| ID |     Nom de la tache     |          Description          |  Date d'echeance |     Priorite     |\n");
+    printf("+----+-------------------------+-------------------------------+------------------+------------------+\n");
+
+    for (int i = 0; i < NMBR_T; i++) {
+        if (tache[i].priority == N) {
+            printf("| %-2d | %-23s | %-29s |", i + 1, tache[i].tache_name, tache[i].description);
+            printf(" %02d/%02d/%04d       |", tache[i].tacheDate.day, tache[i].tacheDate.month, tache[i].tacheDate.year);
+
+            switch (N) {
+                case HAUTE:
+                    printf(" HAUTE            |\n");
+                    break;
+                case MOYENNE:
+                    printf(" MOYENNE          |\n");
+                    break;
+                case BASSE:
+                    printf(" BASSE            |\n");
+                    break;
+                default:
+                    printf(" Inconnue         |\n");
+            }
+
+    printf("+----+-------------------------+-------------------------------+------------------+------------------+\n");
+
+            found = 1;
+        }
+    }
+
+    if (!found) {
+        printf("Aucune tache avec la priorite %d n'a ete trouvee.\n", N);
+    }
+}
+
+
+
+// Exemple d'appel de la fonction FiltrerParPriorite
+// Pour afficher uniquement les tâches avec une priorité de HAUTE (0)
+// FiltrerParPriorite(tache, HAUTE);
+
+
+
 //La function de Menu
 void Menu( Taches tache[]) {
     int  choix;
@@ -258,7 +310,12 @@ void Menu( Taches tache[]) {
                     break;
                 }
 				 break;
-            }   
+            } 
+            case 6:    
+                //Filtrer Par Priorite
+                
+                FiltrerParPriorite(tache);
+                break;	  
 
 			default:
 				printf("Choix invalide. Entrer un choix entre 1 et 7!\n");
