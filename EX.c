@@ -41,9 +41,6 @@ void Ajouter( Taches tache[]) {
     printf("+ La Date (format: day/month/year) :\n");
     scanf("%d/%d/%d", &tache[NMBR_T].tacheDate.day, &tache[NMBR_T].tacheDate.month, &tache[NMBR_T].tacheDate.year);
 
-
-
-
     // Clear the input buffer
     while (getchar() != '\n');
 
@@ -51,7 +48,6 @@ void Ajouter( Taches tache[]) {
     NMBR_T++;
 }
 	
-
 //La fonction de Affichage 
 void Affichage( Taches tache[]) {
     if (NMBR_T < 1) {
@@ -74,10 +70,6 @@ void Affichage( Taches tache[]) {
         }
     }
 }
-
-#include <stdio.h>
-#include <string.h>
-
 void Modifier( Taches tache[], int N) {
     int choix;
     char Newname[50];
@@ -87,7 +79,7 @@ void Modifier( Taches tache[], int N) {
 
     if (N >= 1 && N <= NMBR_T) {
         printf("::::::::: Que voulez vous modifier :::::::\t\n");
-        printf(":: < 1 >  Le nom de tache              ::\n");
+        printf(":: < 1 >  Le nom de tache               ::\n");
         printf(":: < 2 >  La description                ::\n");
         printf(":: < 3 >  La priorite.                  ::\n");
         printf(":: < 4 >  La date                       ::\n");
@@ -135,7 +127,6 @@ void Modifier( Taches tache[], int N) {
     }
 }
 
-
 //La function supprimer
 void Supprimer( Taches tache[]) {
     int pos;
@@ -154,13 +145,8 @@ void Supprimer( Taches tache[]) {
         printf("La tache %d a ete supprimee avec succes.\n", pos);
 
     } else {
-        printf("Numero de tache invalide.\n");
-		
-		
+        printf("Numero de tache invalide.\n");	
     }
-
-
-	
 }
 
 //La function de triee croissant
@@ -183,7 +169,6 @@ void trieeCroissant( Taches tache[]) {
     }Affichage(tache);
 }
 
-
 //La function de triee decroissant
 void trieeDecroissant( Taches tache[]) {
     if (NMBR_T > 0) {
@@ -203,17 +188,14 @@ void trieeDecroissant( Taches tache[]) {
         }
     }Affichage(tache);
 }
-
+void 
 //La function de Menu
 void Menu( Taches tache[]) {
     int  choix;
-
 	// printf("Entrer le nombre de tache :\n");
     // scanf("")
-
-
 	printf("\n");
-	
+
 	do{
 		printf(":::::::::::::::::< Menu >:::::::::::::::::\t\n");
 		printf(":: < 1 >  Ajouter une Tache.            ::\n");
@@ -284,12 +266,8 @@ void Menu( Taches tache[]) {
                 printf("Programme terminé.\n");
                 break;	
 		}
-	} while( choix != '7');
-	
-			
-
+	} while( choix != '7');			
 }
-
 
 int main(){
 	
