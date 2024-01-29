@@ -6,6 +6,7 @@
 
 //Global Variables
 int NMBR_T = 0;
+
 enum priority{
 	 HAUTE ,
 	 MOYENNE ,
@@ -19,64 +20,15 @@ struct date {
     int month;
     int year;
 };
-struct Taches{
+typedef struct {
 	char tache_name[50];
 	char description[100];
 	int  priority;
 	struct date tacheDate;
-};
-
-
-
-// // Function to validate the date format
-// int isValidDate(int day, int month, int year) {
-//     if (year < 1900) {
-//         return 0; // Year should be greater than or equal to 1900
-//     }
-
-//     if (month < 1 || month > 12) {
-//         return 0; // Month should be between 1 and 12
-//     }
-
-//     int daysInMonth;
-
-//     // Determine the number of days in the given month
-//     switch (month) {
-//         case 1:
-//         case 3:
-//         case 5:
-//         case 7:
-//         case 8:
-//         case 10:
-//         case 12:
-//             daysInMonth = 31;
-//             break;
-//         case 4:
-//         case 6:
-//         case 9:
-//         case 11:
-//             daysInMonth = 30;
-//             break;
-//         case 2:
-            
-//                 daysInMonth = 29;
-            
-//             break;
-//         default:
-//             return 0; // Invalid month
-//     }
-
-//     return (day >= 1 && day <= daysInMonth);
-// }
-
-
-
-
-
-
+}Taches;
 
 //founction de ajouter des taches 
-void Ajouter(struct Taches tache[]) {
+void Ajouter( Taches tache[]) {
     printf("Le nom de tache:\n ");
     scanf(" %[^\n]s", tache[NMBR_T].tache_name);
 
@@ -89,13 +41,6 @@ void Ajouter(struct Taches tache[]) {
     printf("+ La Date (format: day/month/year) :\n");
     scanf("%d/%d/%d", &tache[NMBR_T].tacheDate.day, &tache[NMBR_T].tacheDate.month, &tache[NMBR_T].tacheDate.year);
 
-// la condition de verifier la date 
-
-
-    // if (!isValidDate(tache[NMBR_T].tacheDate.day, tache[NMBR_T].tacheDate.month, tache[NMBR_T].tacheDate.year)) {
-    //     printf("Format de date invalide. Veuillez entrer une date valide.\n");
-    //     return;
-    // }
 
 
 
@@ -108,7 +53,7 @@ void Ajouter(struct Taches tache[]) {
 	
 
 //La fonction de Affichage 
-void Affichage(struct Taches tache[]) {
+void Affichage( Taches tache[]) {
     if (NMBR_T < 1) {
         printf("There are no tasks to display.\n");
     } else {
@@ -133,7 +78,7 @@ void Affichage(struct Taches tache[]) {
 #include <stdio.h>
 #include <string.h>
 
-void Modifier(struct Taches tache[], int N) {
+void Modifier( Taches tache[], int N) {
     int choix;
     char Newname[50];
     char NewDescription[100];
@@ -192,7 +137,7 @@ void Modifier(struct Taches tache[], int N) {
 
 
 //La function supprimer
-void Supprimer(struct Taches tache[]) {
+void Supprimer( Taches tache[]) {
     int pos;
 
     printf("Entrez le ID de la tache a supprimer : ");
@@ -218,14 +163,55 @@ void Supprimer(struct Taches tache[]) {
 	
 }
 
+//La function de triee croissant
+void trieeCroissant( Taches tache[]) {
+    if (NMBR_T > 0) {
+        for (int i = 0; i < NMBR_T; i++) {
+            for (int j = i + 1; j < NMBR_T; j++) {
+                // Comparer les annee et le moins et le jours
+
+                if (tache[i].tacheDate.year > tache[j].tacheDate.year || (tache[i].tacheDate.year == tache[j].tacheDate.year && tache[i].tacheDate.month > tache[j].tacheDate.month) 
+                || (tache[i].tacheDate.year == tache[j].tacheDate.year && tache[i].tacheDate.month == tache[j].tacheDate.month && tache[i].tacheDate.day > tache[j].tacheDate.day))
+                 {
+                    // changer les elements
+                    Taches temp = tache[i];
+                    tache[i] = tache[j];
+                    tache[j] = temp;
+                }
+            }
+        }
+    }Affichage(tache);
+}
+
+
+//La function de triee decroissant
+void trieeDecroissant( Taches tache[]) {
+    if (NMBR_T > 0) {
+        for (int i = 0; i < NMBR_T; i++) {
+            for (int j = i - 1; j < NMBR_T; j++) {
+                // Comparer les annee et le moins et le jours
+
+                if (tache[i].tacheDate.year > tache[j].tacheDate.year || (tache[i].tacheDate.year == tache[j].tacheDate.year && tache[i].tacheDate.month > tache[j].tacheDate.month) 
+                || (tache[i].tacheDate.year == tache[j].tacheDate.year && tache[i].tacheDate.month == tache[j].tacheDate.month && tache[i].tacheDate.day > tache[j].tacheDate.day))
+                 {
+                    // changer les elements
+                    Taches temp = tache[i];
+                    tache[i] = tache[j];
+                    tache[j] = temp;
+                }
+            }
+        }
+    }Affichage(tache);
+}
+
 //La function de Menu
-void Menu(struct Taches tache[]) {
+void Menu( Taches tache[]) {
     int  choix;
 
 	// printf("Entrer le nombre de tache :\n");
     // scanf("")
 
-    
+
 	printf("\n");
 	
 	do{
@@ -262,11 +248,36 @@ void Menu(struct Taches tache[]) {
                 break;
             }
 				 break;
-			case 4:
+			case 4:{
             //Supprimer
                 Affichage(tache);
 				Supprimer(tache);
 				 break;
+            }     
+
+			case 5:{
+            //Triee
+                int Triee ; 
+                printf("croissant (0) \t decroissant (1) \n");
+                printf("=> Saisir Votre Choix : ");
+                scanf("%d",&Triee);
+                switch (Triee)
+                {
+                case 1:
+                    trieeCroissant(tache);
+                    break;
+                
+                case 2:
+                    trieeDecroissant(tache);
+                    break;
+                default:
+
+                printf("Choix invalide. Entrer un choix entre 1 et 2!\n");
+                    break;
+                }
+				 break;
+            }   
+
 			default:
 				printf("Choix invalide. Entrer un choix entre 1 et 7!\n");
 			case 7:
@@ -281,9 +292,9 @@ void Menu(struct Taches tache[]) {
 
 
 int main(){
-	struct Taches tache[50];
-	char choix;
 	
-	Menu(tache);	
+	char choix;
+	Taches task[50];
+	Menu(task);	
 		
 }
