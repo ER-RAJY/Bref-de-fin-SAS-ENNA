@@ -230,14 +230,6 @@ void FiltrerParPriorite( Taches tache[]) {
     }
 }
 
-
-
-// Exemple d'appel de la fonction FiltrerParPriorite
-// Pour afficher uniquement les tâches avec une priorité de HAUTE (0)
-// FiltrerParPriorite(tache, HAUTE);
-
-
-
 //La function de Menu
 void Menu( Taches tache[]) {
     int  choix;
